@@ -22,21 +22,19 @@ class ProductDetail(DetailView):
     pk_url_kwarg = "product_id"
 
     def get_context_data(self, *args, **kwargs):
-        ctnx = super().get_context_data(*args, **kwargs)
+        context = super().get_context_data(*args, **kwargs)
         
-        cat = self.get_object().return_category
-        ctnx["cat"] = cat
+        cat = self.get_object().category
+        context["cat"] = cat
 
-        ctnx["color"] = color_property(self.kwargs["product_id"])
-        ctnx["property"] = property_and_details(self.kwargs["product_id"],cat)
+        # ctnx["color"] = color_property(self.kwargs["product_id"])
+        context["attributes"] = self.get_object().attributes.all()
         
-        ctnx["listproduct"] = filter_product_with_param (cat_id=cat)
-        
-        comments = self.get_object().comments
+        comments = self.get_object().comments.all()
 
-        ctnx["form"] = CommentForm()
-        ctnx["comment"] = comments
-        return ctnx
+        context["form"] = CommentForm()
+        context["comment"] = comments
+        return context
 
 
 
@@ -64,14 +62,9 @@ class ShowProduct(ListView):
         return ctx
 
 
-
-
-
-
-
 @login_required(login_url='/user/login')
 def add_to_wishlist(request):
-    user=get_object_or_404(Profile, email=request.user.email)
+    user=get_object_or_404(User, email=request.user.email)
     my_wishlist,_=WishList.objects.get_or_create(user=user)
     product= get_object_or_404(Product, id=request.POST.get("id"))
     my_wishlist.product.add(product)

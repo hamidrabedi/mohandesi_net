@@ -98,3 +98,4 @@ class Command(BaseCommand):
         products = Product.objects.all()
         other_prod= OtherProducts.objects.create()
         other_prod.products.add(*products[100:150])
+        other_prod.save()

@@ -48,9 +48,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'product.context.header',
-
-                'social_django.context_processors.backends',  
-                'social_django.context_processors.login_redirect',
             ],
             'string_if_invalid': 'ERROR: INVALID VARIABLE'
         },

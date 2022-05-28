@@ -54,8 +54,7 @@ class Product(models.Model):
 
     @property
     def return_category(self):
-        cat=Category.objects.get(pk=self.category.id)
-        return cat
+        return self.category
 
     @property
     def comments(self):

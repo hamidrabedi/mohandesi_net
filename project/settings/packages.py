@@ -15,12 +15,10 @@ INSTALLED_APPS+= [
     'pages',
     'django_user_agents',
     'django_filters',
-    'social_django', 
 ]
 
 MIDDLEWARE+= [
     'django_user_agents.middleware.UserAgentMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware',
     'utils.exception_handler.ErrorHandlerMiddleware' #for capturing exceptions
 ]
 
@@ -45,11 +43,6 @@ sentry_sdk.init(
     integrations=[DjangoIntegration()],
     traces_sample_rate=1.0,
     send_default_pii=True
-)
-
-SOCIAL_AUTH_PIPELINE = (
-    'social_core.pipeline.social_auth.social_uid',
-    'social_core.pipeline.social_auth.social_user',
 )
 
 # ################ #

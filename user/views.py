@@ -31,7 +31,7 @@ def login(request):
                 _login(request, user)
                 next = request.GET.get("next", "")
                 if next:
-                    return redirect(next)
+                    return redirect('home')
                 return redirect('home')
             else:
                 return render(request, 'User/login_page.html', {'login_form': login_form})

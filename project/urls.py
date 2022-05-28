@@ -5,17 +5,13 @@ from django.conf.urls.static import static
 
 from decouple import config
 
-from .views import Home, searchbox
-
 
 urlpatterns = [
    path('admin/', admin.site.urls),
-   path('search/',searchbox, name='serachbox'),
-   path('' , Home.as_view() ,  name='home'),
    path('comment/',include('comment.urls', namespace='comment')),
    path('product/',include("product.urls",namespace="product") ),
    path("user/", include("user.urls", namespace='user')),
-   path('oauth/', include('social_django.urls', namespace='social')),
+   path('', include('pages.urls')),
 ]
 
 

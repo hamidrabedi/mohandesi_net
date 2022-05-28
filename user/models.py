@@ -1,14 +1,43 @@
-import trace
 from django.db import models
 from django.utils.translation import gettext as _
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.base_user import BaseUserManager
 from django.core.validators import (
     MaxLengthValidator,
     MinLengthValidator,
     EmailValidator
 )
 
-class User(AbstractUser):
+class UserManager(BaseUserManager):
+    use_in_migrations = True
+
+    def _create_user(self, email, password, **extra_fields):
+        """
+        Creates and saves a User with the given email and password.
+        """
+        if not email:
+            raise ValueError('The given email must be set')
+        email = self.normalize_email(email)
+        user = self.model(
+            email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_user(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_superuser', False)
+        return self._create_user(email, password, **extra_fields)
+
+    def create_superuser(self, email, phone_number, password, **extra_fields):
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return self._create_user(email, phone_number, password, **extra_fields)
+
+class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         _('Email Address'),
         unique=True,
@@ -55,6 +84,11 @@ class User(AbstractUser):
         _('is active'), 
         default=True
         )
+    
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS= []
+    
+    objects = UserManager()
 
 class Exceptions(models.Model):
     url = models.CharField(
@@ -74,3 +108,5 @@ class Exceptions(models.Model):
 
     def __repr__(self):
         return self.error[:50]
+
+

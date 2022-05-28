@@ -6,7 +6,7 @@ from .models import Property,Details,Product,Category
 
 
 def color_property(product_id):
-    property_color = Property.objects.get(property_name="رنگ")
+    property_color = Property.objects.get(title="رنگ")
     detail_color = Details.objects.filter(Q(product_id=product_id) & Q(pro_id=property_color.id))
     return detail_color
 
@@ -14,13 +14,13 @@ def color_property(product_id):
 def property_and_details(product_id,cat):
 
     dict_details = {}
-    properties = Property.objects.filter(cat_id=cat)
+    properties = Property.objects.filter(id=cat)
     for elm in properties:
         details = Details.objects.filter(Q(product_id=product_id) & Q(pro_id=elm.id))
         if details:
-            dict_details[elm.property_name] = details
+            dict_details[elm.title] = details
         else:
-            dict_details[elm.property_name] = ""
+            dict_details[elm.title] = ""
             
     return dict_details
 
@@ -35,7 +35,7 @@ def filtering(filter_params):
     for key,value in filter_params.items():
         print(key,value)
         if key == "c":
-            filtered_product = Product.objects.filter(cat_id_id=value)
+            filtered_product = Product.objects.filter(id_id=value)
         elif key == "price" :
             if value!= "": 
                 price=value.split(",")

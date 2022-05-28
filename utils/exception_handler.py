@@ -1,8 +1,5 @@
 import traceback
 
-from django.http import HttpResponse
-from django.conf import settings
-
 from user.models import Exceptions
 
 class ErrorHandlerMiddleware:

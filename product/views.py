@@ -96,4 +96,3 @@ class Show_wishList(ListView):
         qs=WishList.objects.filter(user = self.request.user).first()
         
         return qs
-       

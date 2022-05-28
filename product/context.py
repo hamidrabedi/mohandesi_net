@@ -2,13 +2,13 @@ from product.models import Category
 
 
 def header(request):
-        sub_cat=[]
-        parent_cat=Category.objects.all().filter(sub_cat=None).order_by('cat_title')
+        parent=[]
+        parent_cat=Category.objects.all().filter(parent=None).order_by('title')
         for cat in parent_cat:
-            sub_cat.append(cat.cattocat.all())
+            parent.append(cat.child.all())
         context = { 
         'parent_cats':parent_cat, 
-        'sub_cats':sub_cat,  
+        'sub_cats':parent,  
         }
         return context
 

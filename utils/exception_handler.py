@@ -21,4 +21,3 @@ class ErrorHandlerMiddleware:
                 error=repr(exception),
                 traceback=traceback.format_exc()
             )
-        return HttpResponse("Error processing the request.", status=500)

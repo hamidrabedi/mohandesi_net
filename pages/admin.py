@@ -1,3 +1,12 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import(
+    TopBanner,
+    Advertisement,
+    OtherProducts
+)
+
+
+admin.site.register(TopBanner)
+admin.site.register(Advertisement)
+admin.site.register(OtherProducts)

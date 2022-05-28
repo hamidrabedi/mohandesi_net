@@ -23,7 +23,9 @@ class User(AbstractUser):
             MinLengthValidator(11),
             MaxLengthValidator(15),
         ],
-        unique = True
+        unique = True, 
+        blank=True,
+        null=True
     )
     first_name = models.CharField(
         _('First Name'),
@@ -63,9 +65,8 @@ class Exceptions(models.Model):
         'Error',
         max_length= 500
     )
-    traceback = models.CharField(
+    traceback = models.TextField(
         'Traceback',
-        max_length= 1000
     )
 
     def __str__(self):

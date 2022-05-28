@@ -5,10 +5,10 @@ from django.utils.text import slugify
 from django.shortcuts import get_object_or_404
 
 class Category(models.Model):
-    cat_title=models.CharField(
+    title=models.CharField(
         max_length=150
         )
-    sub_cat=models.ForeignKey(
+    parent=models.ForeignKey(
         'self',
         on_delete=models.CASCADE,
         null=True,
@@ -26,24 +26,27 @@ class Category(models.Model):
         return cat
 
     def __str__(self) -> str:
-        return self.cat_title
-    
+        return self.title
 
 
 class Product(models.Model):
-    name=models.CharField(max_length=150)
+    title=models.CharField(max_length=150)
     description=models.TextField(null=True)
     brand=models.CharField(max_length=50,null=True ,blank=True)
     price=models.BigIntegerField(null=True)
     in_stock=models.PositiveIntegerField(null=True)
-    activate=models.BooleanField(default=False)
-    img=models.ImageField(upload_to="Products/",null=True,blank=True)
-    img1=models.ImageField(upload_to="Products/",null=True,blank=True)
-    img2=models.ImageField(upload_to="Products/",null=True,blank=True)
+    is_active=models.BooleanField(default=False)
+    img=models.ImageField(upload_to="products/",null=True,blank=True)
+    img1=models.ImageField(upload_to="products/",null=True,blank=True)
+    img2=models.ImageField(upload_to="products/",null=True,blank=True)
     date_create=models.DateField(auto_now_add=True)
-    data_update=models.DateField(auto_now=True)
-    cat_id=models.ForeignKey(Category, on_delete=models.CASCADE,  related_name='products' )
+    date_update=models.DateField(auto_now=True)
+    category=models.ForeignKey(Category, on_delete=models.CASCADE,  related_name='products' )
     slug = models.SlugField(null=True, unique=True, blank=True)
+    attributes = models.ManyToManyField(
+        'Details',
+        related_name='products'
+    )
 
     class Meta:
         verbose_name = "Product"
@@ -51,15 +54,19 @@ class Product(models.Model):
 
     @property
     def return_category(self):
-        cat=Category.objects.get(pk=self.cat_id.id)
+        cat=Category.objects.get(pk=self.category.id)
         return cat
 
     @property
     def comments(self):
         return self.comments.all()
+
+    @property
+    def get_possible_attributes(self):
+        return self.category.properties.details.all()
     
     def __str__(self) -> str:
-        return f"{self.name}-{self.brand}"
+        return self.title
 
 
     def save(self, *args, **kwargs) -> None:
@@ -69,12 +76,12 @@ class Product(models.Model):
 
 
 class Property(models.Model):
-    property_name=models.CharField(
+    title=models.CharField(
         max_length=50,
         null=True,
         blank=True
     )
-    cat_id=models.ForeignKey(
+    category=models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
         null=True,
@@ -82,26 +89,32 @@ class Property(models.Model):
         related_name='properties'
     )
 
+    @property
+    def details(self):
+        return self.details.all()
+
     class Meta:
         verbose_name = "Property"
         verbose_name_plural = "Properties"
 
     def __str__(self) -> str:
-        return self.property_name
+        return self.title
 
 
 class Details(models.Model):
-    pro_id=models.ForeignKey(
+    property=models.ForeignKey(
         Property,
         on_delete=models.CASCADE,
         related_name='details'
     )
-    product_id=models.ManyToManyField(Product)
     detail=models.CharField(
         max_length=400,
         null=True,
         blank=True
     ) 
+    class Meta:
+        verbose_name = "Detail"
+        verbose_name_plural = "Details"
 
     def __str__(self) -> str:
         return self.detail
@@ -122,5 +135,8 @@ class WishList(models.Model):
     class Meta:
         verbose_name = "Wishlist"
         verbose_name_plural = "Wishlists"
+
+    def __str__(self):
+        return self.user.email
 
 

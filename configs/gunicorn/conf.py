@@ -1,10 +1,10 @@
 import multiprocessing
 
-bind = "127.0.0.1:32226"
+bind = "0.0.0.0:32226"
 workers = multiprocessing.cpu_count() * 2 + 1
 worker_class = 'gevent'
 worker_connection = 1000
-timeout = 2
+timeout = 100
 
 preload_app = False
 daemon = False

@@ -30,3 +30,5 @@ tqdm
 faker
 gevent
 pipenv
+django-redis
+django-cacheops

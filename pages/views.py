@@ -26,3 +26,7 @@ class Home(ListView):
             'banners':banners
         }
         return render(request , 'home.html' ,context)
+
+class RaiseException(ListView):
+    def get(self,request):
+        raise Exception('THIS IS A TEST EXCEPTION RAISE')

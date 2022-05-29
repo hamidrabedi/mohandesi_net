@@ -36,6 +36,8 @@ Django = "*"
 Jinja2 = "*"
 Pillow = "*"
 Faker = "*"
+django-redis = "*"
+django-cacheops = "*"
 
 [dev-packages]
 

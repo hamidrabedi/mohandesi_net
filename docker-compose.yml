@@ -8,8 +8,10 @@ services:
       args:
         WORKING_DIR: /app
     restart: always
-    command: gunicorn -c conf/gunicorn/conf.py --chdir kernel kernel.wsgi:application
+    container_name: mohandesi-ecom
+    command: gunicorn -c configs/gunicorn/conf.py --chdir project project.wsgi:application
     volumes:
+      - .:/app
       # Collectstatic files for Nginx
       - /home/devops/backups/mohandesi/collectstatic:/app/media/collectstatic
       # Media Files (Upload) for Nginx

@@ -15,6 +15,7 @@ INSTALLED_APPS+= [
     'pages',
     'django_user_agents',
     'django_filters',
+    'cacheops',
 ]
 
 MIDDLEWARE+= [
@@ -98,5 +99,6 @@ CACHES = {
 }
 
 CACHEOPS = {
-    'product.*':{'ops': 'all','timeout':60*60}
+    'product.*':{'ops': 'all','timeout':60*60},
+    'pages.*':{'ops': 'all','timeout':60*60}
 }

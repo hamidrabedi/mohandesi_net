@@ -64,39 +64,39 @@ THUMBNAIL_KEY_PREFIX=config('THUMBNAIL_KEY_PREFIX')
 #   CACHE   #
 # ######### #
 
-# SESSION_ENGINE = "django.contrib.sessions.backends.cache"
-# SESSION_CACHE_ALIAS = "default"
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
 
-# REDIS_AUTHENTICATION_URL = f"{config('REDIS_USER')}:{config('REDIS_PASSWORD')}"
-# REDIS_ADDRESS = f"{config('REDIS_HOST')}:{config('REDIS_PORT')}"
-# REDIS_DB = config("REDIS_DATABASE")
-# REDIS_TEST_DB = config("REDIS_TEST_DATABASE")
-# REDIS_PROTO = config('REDIS_PROTOCOL')
+REDIS_AUTHENTICATION_URL = f"{config('REDIS_USER')}:{config('REDIS_PASSWORD')}"
+REDIS_ADDRESS = f"{config('REDIS_HOST')}:{config('REDIS_PORT')}"
+REDIS_DB = config("REDIS_DATABASE")
+REDIS_TEST_DB = config("REDIS_TEST_DATABASE")
+REDIS_PROTO = config('REDIS_PROTOCOL')
 
-# REDIS_TEST_CONNECTION_URL = f"{REDIS_PROTO}://{REDIS_AUTHENTICATION_URL}@{REDIS_ADDRESS}/{REDIS_TEST_DB}"
-# REDIS_CONNECTION_URL = f"{REDIS_PROTO}://{REDIS_AUTHENTICATION_URL}@{REDIS_ADDRESS}/{REDIS_DB}"
+REDIS_TEST_CONNECTION_URL = f"{REDIS_PROTO}://{REDIS_AUTHENTICATION_URL}@{REDIS_ADDRESS}/{REDIS_TEST_DB}"
+REDIS_CONNECTION_URL = f"{REDIS_PROTO}://{REDIS_AUTHENTICATION_URL}@{REDIS_ADDRESS}/{REDIS_DB}"
 
-# CACHEOPS_REDIS = REDIS_CONNECTION_URL
+CACHEOPS_REDIS = REDIS_CONNECTION_URL
 
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": REDIS_CONNECTION_URL,
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#             "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
-#         }
-#     },
-#     "test": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": REDIS_TEST_CONNECTION_URL,
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#         }
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": REDIS_CONNECTION_URL,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
+        }
+    },
+    "test": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": REDIS_TEST_CONNECTION_URL,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
         
-#     }
-# }
+    }
+}
 
-# CACHEOPS = {
-#     'discount.*':{'ops': 'all','timeout':60*60}
-# }
+CACHEOPS = {
+    'product.*':{'ops': 'all','timeout':60*60}
+}

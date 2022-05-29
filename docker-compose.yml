@@ -7,23 +7,16 @@ services:
       dockerfile: Dockerfile
       args:
         WORKING_DIR: /app
-    container_name: mohandesi
-    hostname: django
-    restart: 'always'
-
-    command: gunicorn -c config/gunicorn/conf.py --chdir kernel kernel.wsgi.application
-    # command: python manage.py runserver 0.0.0.0:8600
-
+    restart: always
+    command: gunicorn -c conf/gunicorn/conf.py --chdir kernel kernel.wsgi:application
     volumes:
-      # Source Code of project
-      - .:/app
-      # Collect Static files
-      - static_volume:/app/media/collectstatic
-      # Media Files (Uploads)
-      - media_volume:/app/media/upload
-
+      # Collectstatic files for Nginx
+      - /home/devops/backups/mohandesi/collectstatic:/app/media/collectstatic
+      # Media Files (Upload) for Nginx
+      - /home/devops/backups/mohandesi/upload:/app/media/upload
+      # Django Logging
+      - /var/log/mohandesi:/app/log
     stop_grace_period: 1m30s
-
     healthcheck:
       test: ["CMD", "curl", "-f", "http://127.0.0.1:32226"]
       interval: 1m30s
@@ -31,7 +24,15 @@ services:
       retries: 3
       start_period: 40s
     ports:
-      - 32226:32226
+      - "32226:32226"
     networks:
       - database_network
       - cache_network
+      - webserver_network
+networks:
+  database_network:
+    external: true
+  cache_network:
+    external: true
+  webserver_network:
+    external: true
